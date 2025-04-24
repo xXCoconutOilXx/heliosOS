@@ -1,24 +1,28 @@
-ENTRY(kernel_main)
+ENTRY(_start)
 
 SECTIONS
 {
     . = 0x100000;
 
-    .multiboot ALIGN(4) : AT(0x100000) {
+    .text :
+    {
         *(.multiboot)
+        *(.text*)
     }
 
-    .text ALIGN(4) : AT(ADDR(.multiboot) + SIZEOF(.multiboot)) {
-        *(.text)
+    .rodata :
+    {
+        *(.rodata*)
     }
 
-    .data ALIGN(4) : AT(ADDR(.text) + SIZEOF(.text)) {
-        *(.data)
+    .data :
+    {
+        *(.data*)
     }
 
-    .bss ALIGN(4) : AT(ADDR(.data) + SIZEOF(.data)) {
-        *(.bss)
+    .bss :
+    {
+        *(.bss*)
+        *(COMMON)
     }
-
-    /DISCARD/ : { *(*) }
 }
